@@ -13,9 +13,7 @@ internal class Program
 	{
 		string csvData = "Name, Age, Location\n\"John, Doe\", 25, \"New York, NY\"\n\"Jane, Smith\", 30, \"Los Angeles, CA\"";
 		using StringReader reader = new StringReader(csvData);
-
 		var parsedCsv = ParseCsv(reader);
-
 		foreach (var row in parsedCsv)
 		{
 			foreach (var kvp in row)
@@ -27,16 +25,14 @@ internal class Program
 	}
 
 	/// <summary>Parses the CSV.</summary>
-	/// <param name="reader">The reader.</param>
+	/// <param name="reader">This is a StringReader that contains to the CSV content to be parsed.</param>
 	/// <returns>This is the parsed content of the CSV file.</returns>
 	private static List<Dictionary<string, string>> ParseCsv(StringReader reader)
 	{
 		var records = new List<Dictionary<string, string>>();
 		var headers = new List<string>();
-
 		string? line;
 		bool isHeaderRow = true;
-
 		while ((line = reader.ReadLine()) != null)
 		{
 			var values = ParseCsvLine(line);
@@ -56,24 +52,21 @@ internal class Program
 				records.Add(record);
 			}
 		}
-
 		return records;
 	}
 
 	/// <summary>Parses the CSV line.</summary>
-	/// <param name="line">The line.</param>
+	/// <param name="line">This is the line to be parsed (single row in a CSV file).</param>
 	/// <returns>This is the parse content of a CSV line.</returns>
 	private static List<string> ParseCsvLine(string line)
 	{
 		var values = new List<string>();
 		var pattern = @"(?:\""(?<quoted>.*?)\"")|(?<unquoted>[^,]+)";
 		var matches = Regex.Matches(line, pattern);
-
 		foreach (Match match in matches)
 		{
 			values.Add(match.Groups["quoted"].Success ? match.Groups["quoted"].Value : match.Groups["unquoted"].Value);
 		}
-
 		return values;
 	}
 }
